@@ -1,6 +1,21 @@
+type SenderInfo {
+	id: ID!
+	name: String
+	email: String!
+	picture: String
+}
+
+input SenderInfoInput {
+	id: ID!
+	name: String
+	email: String!
+	picture: String
+}
+
 input CreateTeamMessageInput {
 	boardId: ID!
 	senderId: ID!
+    senderInfo: SenderInfoInput
 	message: String!
 	files: [String]
 	seenBy: [ID]
@@ -95,6 +110,7 @@ type TeamMessage {
 	id: ID!
 	boardId: ID!
 	senderId: ID!
+	senderInfo: SenderInfo
 	message: String!
 	files: [String]
 	seenBy: [ID]

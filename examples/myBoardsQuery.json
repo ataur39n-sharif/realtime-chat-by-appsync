@@ -1,0 +1,27 @@
+query GetMyBoards {
+    getMyBoards(userId: "b8aedf95-ed23-46fc-a379-7a4edfb60241") {
+        data {
+            id
+            role
+            status
+            createdAt
+            updatedAt
+            boardId
+            boardInfo {
+                name
+                description
+                ownerId
+                memberCount
+                createdAt
+                updatedAt
+                inviteCode
+                coverImage
+                boardImage
+                boardStatus
+                boardType
+            }
+        }
+        success
+        message
+    }
+}

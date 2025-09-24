@@ -36,6 +36,34 @@ export const getTeamMessage = /* GraphQL */ `
   }
 `;
 
+export const queryTeamMessagesByBoardIdIndex = /* GraphQL */ `
+  query QueryTeamMessagesByBoardIdIndex(
+    $boardId: ID!
+    $first: Int
+    $after: String
+  ) {
+    queryTeamMessagesByBoardIdIndex(boardId: $boardId, first: $first, after: $after) {
+      items {
+        id
+        boardId
+        senderId
+        senderInfo {
+          id
+          name
+          email
+          picture
+        }
+        message
+        files
+        seenBy
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+
 // GraphQL mutations
 export const createTeamMessage = /* GraphQL */ `
   mutation CreateTeamMessage($input: CreateTeamMessageInput!) {
@@ -43,6 +71,12 @@ export const createTeamMessage = /* GraphQL */ `
       id
       boardId
       senderId
+      senderInfo {
+        id
+        name
+        email
+        picture
+      }
       message
       files
       seenBy
@@ -89,6 +123,12 @@ export const onCreateTeamMessage = /* GraphQL */ `
       id
       boardId
       senderId
+      senderInfo {
+        id
+        name
+        email
+        picture
+      }
       message
       files
       seenBy

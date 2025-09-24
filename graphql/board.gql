@@ -1,0 +1,362 @@
+type Board {
+	id: ID!
+	name: String!
+	slug: String
+	description: String
+	boardType: BoardType!
+	boardStatus: BoardStatus!
+	boardPriority: Int
+	boardCategory: String
+	boardSubCategory: String
+	boardTags: [String!]
+	boardLabels: [String!]
+	poolId: String!
+	ownerId: String!
+	ownerInfo: User
+	memberCount: Int!
+	memberLimit: Int!
+	inviteCode: String
+	sponsorInfo: Sponsor
+	coverImage: String
+	boardImage: String
+	termsAndConditions: String
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+
+type BoardMember {
+	id: ID!
+	boardId: ID!
+	email: String!
+	role: Role!
+	status: BoardMemberStatus!
+	agreeTerms: Boolean!
+	name: String
+	avatar: String
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+}
+
+enum BoardMemberStatus {
+	invited
+	joined
+	requested
+}
+
+type BoardResponse {
+	data: [Board]
+	nextToken: String
+	success: Boolean!
+	message: String
+}
+
+type BoardRole {
+	id: ID!
+	title: String!
+	definitionS3Uri: String!
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+	boardId: String!
+}
+
+type BoardRoleConnection {
+	items: [BoardRole]
+	nextToken: String
+}
+
+enum BoardStatus {
+	ACTIVE
+	INACTIVE
+	ARCHIVED
+	PENDING
+	REJECTED
+}
+
+enum BoardType {
+	PUBLIC
+	COMMUNITY
+	PRIVATE
+	SPONSORED
+}
+
+input CreateBoardInput {
+	name: String!
+	slug: String
+	description: String
+	boardType: BoardType!
+	boardCategory: String
+	boardSubCategory: String
+	boardTags: [String!]
+	boardLabels: [String!]
+	ownerId: String!
+	termsAndConditions: String
+	coverImage: String
+	boardImage: String
+}
+
+input CreateBoardRoleInput {
+	title: String!
+	definitionS3Uri: String!
+	boardId: String!
+}
+
+input DeleteBoardRoleInput {
+	id: ID!
+}
+
+input InviteBoardInput {
+	boardId: ID!
+	email: String!
+	role: Role!
+	boardType: BoardType!
+}
+
+input JoinBoardInput {
+	boardId: ID!
+	email: String!
+	agreeTerms: Boolean!
+	boardType: BoardType!
+}
+
+input ModelSizeInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	between: [Int]
+}
+
+type MyBoardResponse {
+	data: [MyBoardResponseDataType!]
+	success: Boolean!
+	message: String!
+}
+
+type MyBoardResponseBoardData {
+	name: String!
+	description: String
+	ownerId: String!
+	memberCount: Int!
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+	inviteCode: String
+	coverImage: String
+	boardImage: String
+	boardStatus: BoardStatus!
+	boardType: BoardType!
+}
+
+type MyBoardResponseDataType {
+	id: ID!
+	role: Role!
+	status: BoardMemberStatus!
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+	boardId: ID!
+	boardInfo: MyBoardResponseBoardData
+}
+
+enum Role {
+	owner
+	member
+	admin
+}
+
+type SimpleBoardResponse {
+	data: Board
+	success: Boolean!
+	message: String
+}
+
+type SimpleResponse {
+	success: Boolean!
+	message: String
+}
+
+type Sponsor {
+	id: ID!
+	name: String!
+	email: String!
+	avatar: String
+	website: String
+	description: String
+}
+
+input TableBoardRoleFilterInput {
+	id: TableIDFilterInput
+	title: TableStringFilterInput
+	definitionS3Uri: TableStringFilterInput
+	createdAt: TableStringFilterInput
+	updatedAt: TableStringFilterInput
+	boardId: TableStringFilterInput
+}
+
+input TableBooleanFilterInput {
+	ne: Boolean
+	eq: Boolean
+	attributeExists: Boolean
+}
+
+input TableFloatFilterInput {
+	ne: Float
+	eq: Float
+	le: Float
+	lt: Float
+	ge: Float
+	gt: Float
+	between: [Float]
+	attributeExists: Boolean
+}
+
+input TableIDFilterInput {
+	ne: ID
+	eq: ID
+	le: ID
+	lt: ID
+	ge: ID
+	gt: ID
+	contains: ID
+	notContains: ID
+	between: [ID]
+	beginsWith: ID
+	attributeExists: Boolean
+	size: ModelSizeInput
+}
+
+input TableIntFilterInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	between: [Int]
+	attributeExists: Boolean
+}
+
+input TableStringFilterInput {
+	ne: String
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	contains: String
+	notContains: String
+	between: [String]
+	beginsWith: String
+	attributeExists: Boolean
+	size: ModelSizeInput
+}
+
+enum UpdateAllowedBoardMemberRole {
+	member
+	admin
+}
+
+input UpdateBoardInput {
+	id: ID!
+	name: String
+	description: String
+	boardType: BoardType!
+	boardStatus: BoardStatus
+	boardPriority: Int
+	boardCategory: String
+	boardSubCategory: String
+	boardTags: [String]
+	boardLabels: [String]
+	inviteCode: String
+	termsAndConditions: String
+	coverImage: String
+	boardImage: String
+}
+
+input UpdateBoardMemberRole {
+	id: ID!
+	role: UpdateAllowedBoardMemberRole!
+}
+
+type UpdateBoardResponse {
+	data: Board
+	success: Boolean!
+	message: String
+}
+
+input UpdateBoardRoleInput {
+	id: ID!
+	title: String
+	definitionS3Uri: String
+}
+
+type User {
+	name: String
+	email: String
+	avatar: String
+}
+
+input UserInput {
+	name: String!
+	email: String!
+	avatar: String
+}
+
+type Mutation {
+	createBoard(input: CreateBoardInput!): BoardResponse
+	updateBoard(input: UpdateBoardInput!): UpdateBoardResponse
+	deleteBoard(boardId: ID!, boardType: BoardType!): SimpleResponse
+	joinRequestToBoard(input: JoinBoardInput!): SimpleResponse
+	acceptJoinRequest(requestId: ID!): SimpleResponse
+	inviteInBoard(input: InviteBoardInput!): SimpleResponse
+	acceptInvitation(token: String!): SimpleResponse
+	updateBoardMemberRole(input: UpdateBoardMemberRole!): SimpleResponse
+	deleteBoardMember(memberId: ID!): SimpleResponse
+	createBoardRole(input: CreateBoardRoleInput!): BoardRole
+	updateBoardRole(input: UpdateBoardRoleInput!): BoardRole
+	deleteBoardRole(input: DeleteBoardRoleInput!): BoardRole
+}
+
+type Query {
+	getBoards(limit: Int): [Board!]
+	getBoardsById(boardId: ID!, boardType: BoardType!): SimpleBoardResponse
+	getBoardsByType(boardType: BoardType!, limit: Int, nextToken: String): BoardResponse
+	getBoardsByOwnerId(ownerId: String!): [Board!]
+	getBoardMembers(boardId: ID!): [BoardMember!]
+	getMyBoards(userId: String!): MyBoardResponse
+	getBoardRole(id: ID!): BoardRole
+	listBoardRoles(filter: TableBoardRoleFilterInput, limit: Int, nextToken: String): BoardRoleConnection
+	queryBoardRolesByBoardIdIndex(boardId: String!, first: Int, after: String): BoardRoleConnection
+}
+
+type Subscription {
+	onCreateBoardRole(
+		id: ID,
+		title: String,
+		definitionS3Uri: String,
+		createdAt: AWSDateTime,
+		updatedAt: AWSDateTime
+	): BoardRole
+		@aws_subscribe(mutations: ["createBoardRole"])
+	onUpdateBoardRole(
+		id: ID,
+		title: String,
+		definitionS3Uri: String,
+		createdAt: AWSDateTime,
+		updatedAt: AWSDateTime
+	): BoardRole
+		@aws_subscribe(mutations: ["updateBoardRole"])
+	onDeleteBoardRole(
+		id: ID,
+		title: String,
+		definitionS3Uri: String,
+		createdAt: AWSDateTime,
+		updatedAt: AWSDateTime
+	): BoardRole
+		@aws_subscribe(mutations: ["deleteBoardRole"])
+}
+
+schema {
+	query: Query
+	mutation: Mutation
+}

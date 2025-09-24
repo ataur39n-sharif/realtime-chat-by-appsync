@@ -1,26 +1,32 @@
 # Real-time Team Chat with AWS AppSync
 
-A modern, responsive team messaging application built with Next.js, TypeScript, and AWS AppSync for real-time communication. Features a beautiful UI powered by Shadcn UI components and Tailwind CSS.
+A modern, responsive team messaging application built with Next.js, TypeScript, and AWS AppSync for real-time communication. Features a beautiful UI powered by Shadcn UI components and Tailwind CSS with comprehensive authentication and board management.
 
 ## 🚀 Features
 
-- **Real-time Messaging**: Powered by AWS AppSync GraphQL subscriptions
-- **Multi-Team Support**: Switch between different teams/boards
-- **User Management**: Switch between different users for testing
+- **Real-time Messaging**: Powered by AWS AppSync GraphQL subscriptions with sender information
+- **Multi-Board Support**: Create and manage different project boards
+- **User Authentication**: Secure login system with JWT token management
+- **Board Management**: Dynamic board creation, navigation, and type-based organization
+- **Sender Information**: Messages display sender details including name and avatar
 - **Modern UI**: Built with Shadcn UI components and Tailwind CSS
 - **Responsive Design**: Mobile-first approach with seamless desktop experience
 - **TypeScript**: Full type safety throughout the application
 - **Real-time Status**: Connection status indicators
 - **Message Persistence**: Messages are stored and retrieved from AWS AppSync
+- **Dynamic Routing**: Board-specific URLs with type parameters
+- **Error Handling**: Comprehensive error handling and retry mechanisms
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS, Shadcn UI Components
 - **Backend**: AWS AppSync (GraphQL)
-- **State Management**: Zustand
+- **Authentication**: JWT tokens with cookie-based storage
+- **State Management**: React hooks and context
 - **Icons**: Lucide React
 - **Package Manager**: pnpm
+- **Routing**: Next.js App Router with dynamic routes
 
 ## 📦 Installation
 
@@ -54,42 +60,58 @@ A modern, responsive team messaging application built with Next.js, TypeScript, 
 
 ## 🎯 Usage
 
-### Switching Users
-Use the user dropdown in the header to switch between different test users:
-- Alice Johnson
-- Bob Smith
-- Carol Davis
-- David Wilson
+### Authentication
+1. Navigate to the login page
+2. Enter your credentials to authenticate
+3. The system will store your JWT token securely in cookies
+4. Access boards and messaging features after authentication
 
-### Switching Teams/Boards
-Use the team dropdown to switch between different teams:
-- Development
-- Design
-- Marketing
-- General
+### Board Management
+- View all available boards on the main dashboard
+- Click on a board to enter its chat interface
+- Board URLs include the board type for proper navigation
+- Each board maintains its own message history
 
-### Sending Messages
-1. Type your message in the input field at the bottom
-2. Press Enter or click the Send button
-3. Messages appear in real-time for all users in the same team
+### Messaging
+1. Select a board from the dashboard
+2. Type your message in the input field at the bottom
+3. Press Enter or click the Send button
+4. Messages appear in real-time with sender information (name and avatar)
+5. All messages are persisted and retrieved from AWS AppSync
+
+### Board Navigation
+- Use the breadcrumb navigation to return to the boards list
+- Board names are dynamically loaded and displayed
+- Each board maintains its own conversation thread
 
 ## 🏗️ Project Structure
 
 ```
 src/
 ├── app/
+│   ├── auth/
+│   │   └── page.tsx         # Authentication page
+│   ├── board/
+│   │   └── [id]/
+│   │       └── page.tsx     # Dynamic board page
+│   ├── boards/
+│   │   └── page.tsx         # Boards dashboard
 │   ├── globals.css          # Global styles and Tailwind CSS
 │   ├── layout.tsx           # Root layout component
-│   └── page.tsx             # Main chat page component
+│   └── page.tsx             # Landing page
 ├── components/
+│   ├── board-chat-interface.tsx  # Main chat interface component
 │   └── ui/                  # Shadcn UI components
-├── data/
-│   └── dummy-data.ts        # Test data for users and teams
 ├── lib/
+│   ├── actions/
+│   │   └── auth-actions.ts  # Authentication actions
 │   ├── appsync.ts          # AWS AppSync configuration
 │   ├── graphql.ts          # GraphQL queries and mutations
 │   ├── types.ts            # TypeScript type definitions
 │   └── utils.ts            # Utility functions
+├── graphql/
+│   ├── board.gql           # Board-related GraphQL operations
+│   └── message.gql         # Message-related GraphQL operations
 ```
 
 ## 🔧 Available Scripts
@@ -120,16 +142,28 @@ The application uses Shadcn UI components for a consistent and modern design:
 
 The application integrates with AWS AppSync for:
 
-- **GraphQL API**: Type-safe API operations
-- **Real-time Subscriptions**: Live message updates
-- **Offline Support**: Built-in caching and sync
-- **Authentication**: API key-based authentication
+- **GraphQL API**: Type-safe API operations with comprehensive schema
+- **Real-time Subscriptions**: Live message updates across all connected clients
+- **Authentication**: JWT token-based authentication with secure cookie storage
+- **Board Management**: Dynamic board creation, retrieval, and management
+- **Message Persistence**: Complete message history with sender information
+- **Offline Support**: Built-in caching and synchronization
 
 ### GraphQL Operations
 
-- `listMessages` - Fetch existing messages
-- `createMessage` - Send new messages
-- `onCreateMessage` - Subscribe to new messages
+#### Board Operations
+- `getMyBoards` - Fetch user's accessible boards
+- `getBoardsById` - Get specific board details by ID and type
+- `createBoard` - Create new project boards
+
+#### Message Operations
+- `queryTeamMessagesByBoardIdIndex` - Fetch messages for a specific board
+- `createMessage` - Send new messages with sender information
+- `onCreateMessage` - Subscribe to real-time message updates
+
+#### Authentication Operations
+- `getCurrentUser` - Retrieve current authenticated user information
+- JWT token validation and refresh mechanisms
 
 ## 📱 Responsive Design
 
@@ -142,14 +176,27 @@ The application is fully responsive with:
 
 ## 🔒 Environment Variables
 
-Required environment variables for AWS AppSync:
+Required environment variables for AWS AppSync and authentication:
 
 | Variable | Description |
 |----------|-------------|
 | `NEXT_PUBLIC_APPSYNC_GRAPHQL_ENDPOINT` | Your AppSync GraphQL endpoint |
 | `NEXT_PUBLIC_APPSYNC_REGION` | AWS region (e.g., us-east-1) |
-| `NEXT_PUBLIC_APPSYNC_AUTHENTICATION_TYPE` | Authentication type (API_KEY) |
-| `NEXT_PUBLIC_APPSYNC_API_KEY` | Your AppSync API key |
+| `NEXT_PUBLIC_APPSYNC_AUTHENTICATION_TYPE` | Authentication type (AMAZON_COGNITO_USER_POOLS) |
+| `NEXT_PUBLIC_USER_POOL_ID` | Cognito User Pool ID |
+| `NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID` | Cognito User Pool Web Client ID |
+
+## 🔧 Recent Updates
+
+### Version 2.0 Features
+- **Enhanced Authentication**: Implemented JWT token-based authentication with secure cookie storage
+- **Board Management System**: Added comprehensive board creation, navigation, and management
+- **Dynamic Routing**: Implemented board-specific URLs with type parameters (`/board/[id]`)
+- **Sender Information**: Messages now include complete sender details (name, avatar, user ID)
+- **Improved GraphQL Schema**: Updated schema to support board operations and sender information
+- **Error Handling**: Added comprehensive error handling and validation throughout the application
+- **Real-time Updates**: Enhanced real-time messaging with proper subscription management
+- **Responsive UI**: Improved mobile and desktop user experience with better navigation
 
 ## 🤝 Contributing
 

@@ -1,7 +1,15 @@
+export interface SenderInfo {
+  id: string;
+  name?: string;
+  email: string;
+  picture?: string;
+}
+
 export interface TeamMessage {
   id: string;
   boardId: string;
   senderId: string;
+  senderInfo?: SenderInfo;
   message: string;
   files?: string[];
   seenBy?: string[];
@@ -22,9 +30,17 @@ export interface Board {
   description: string;
 }
 
+export interface SenderInfoInput {
+  id: string;
+  name?: string;
+  email: string;
+  picture?: string;
+}
+
 export interface CreateTeamMessageInput {
   boardId: string;
   senderId: string;
+  senderInfo?: SenderInfoInput;
   message: string;
   files?: string[];
   seenBy?: string[];

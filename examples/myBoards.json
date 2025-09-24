@@ -1,0 +1,73 @@
+{
+    "data": {
+        "getMyBoards": {
+            "data": [
+                {
+                    "id": "5a6dc46e-5f0c-4eaa-a667-e9d66a67ea53#rahman.sharif39n@gmail.com",
+                    "role": "member",
+                    "status": "invited",
+                    "createdAt": "2025-08-31T15:07:32.469Z",
+                    "updatedAt": "2025-08-31T15:07:32.469Z",
+                    "boardId": "5a6dc46e-5f0c-4eaa-a667-e9d66a67ea53",
+                    "boardInfo": {
+                        "name": "Voltron - Blue Lion Compliance",
+                        "description": "Run Compliance Scan and take action in one place. \nPerform a Compliance check on AWS Resources     \nStay up-to-date on new Compliance policies \n",
+                        "ownerId": "f057b35c-1c45-46c3-937b-3751efe3d928",
+                        "memberCount": 1,
+                        "createdAt": "2025-08-16T04:10:24.257Z",
+                        "updatedAt": "2025-08-16T04:10:24.257Z",
+                        "inviteCode": "d66a67ea53",
+                        "coverImage": "",
+                        "boardImage": "",
+                        "boardStatus": "ACTIVE",
+                        "boardType": "PRIVATE"
+                    }
+                },
+                {
+                    "id": "3f27f1f2-63e3-4d28-a46a-ad6518fe0693#rahman.sharif39n@gmail.com",
+                    "role": "owner",
+                    "status": "joined",
+                    "createdAt": "2025-08-24T06:03:53.918Z",
+                    "updatedAt": "2025-08-24T06:03:53.918Z",
+                    "boardId": "3f27f1f2-63e3-4d28-a46a-ad6518fe0693",
+                    "boardInfo": {
+                        "name": "Personal Board",
+                        "description": "Demo",
+                        "ownerId": "b8aedf95-ed23-46fc-a379-7a4edfb60241",
+                        "memberCount": 1,
+                        "createdAt": "2025-08-24T06:03:51.383Z",
+                        "updatedAt": "2025-08-24T06:03:51.383Z",
+                        "inviteCode": "6518fe0693",
+                        "coverImage": "",
+                        "boardImage": "",
+                        "boardStatus": "ACTIVE",
+                        "boardType": "PRIVATE"
+                    }
+                },
+                {
+                    "id": "6c24ffc7-417f-46ba-9867-b7daec3da27b#rahman.sharif39n@gmail.com",
+                    "role": "member",
+                    "status": "joined",
+                    "createdAt": "2025-08-21T05:07:40.925Z",
+                    "updatedAt": "2025-08-24T03:52:46.511Z",
+                    "boardId": "6c24ffc7-417f-46ba-9867-b7daec3da27b",
+                    "boardInfo": {
+                        "name": "Feature Development AI board",
+                        "description": "Help build end to end features and coordinate actions. ",
+                        "ownerId": "f057b35c-1c45-46c3-937b-3751efe3d928",
+                        "memberCount": 1,
+                        "createdAt": "2025-08-13T02:44:04.751Z",
+                        "updatedAt": "2025-08-13T02:44:04.751Z",
+                        "inviteCode": "daec3da27b",
+                        "coverImage": "",
+                        "boardImage": "",
+                        "boardStatus": "ACTIVE",
+                        "boardType": "PRIVATE"
+                    }
+                }
+            ],
+            "success": true,
+            "message": "Successfully retrieved my board list"
+        }
+    }
+}

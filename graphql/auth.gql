@@ -1,0 +1,192 @@
+# ========================================
+# RESPONSE TYPES - Based on Lambda Function Return Types
+# ========================================
+# Authentication tokens response (returned by login and refreshToken operations)
+type AuthToken {
+	accessToken: String!
+	idToken: String!
+	refreshToken: String!
+	tokenType: String!
+	expiresIn: Int!
+}
+
+# Success response wrapper for AuthToken operations (login, refreshToken)
+type AuthTokenResponse {
+	success: Boolean!
+	message: String!
+	data: AuthToken
+	error: String
+}
+
+# Change password input
+input ChangePasswordInput {
+	accessToken: String!
+	previousPassword: String!
+	proposedPassword: String!
+}
+
+# Code delivery details for confirmation codes
+type CodeDeliveryDetails {
+	destination: String
+	deliveryMedium: String
+	attributeName: String
+}
+
+# Confirm registration input
+input ConfirmRegistrationInput {
+	email: String!
+	confirmationCode: String!
+}
+
+# Error response type
+type ErrorResponse {
+	success: Boolean!
+	message: String!
+	error: AWSJSON
+}
+
+# Forget password input
+input ForgetPasswordInput {
+	email: String!
+}
+
+# Success response wrapper for ForgotPasswordResponse operations (forgetPassword)
+type ForgotPasswordResponse {
+	success: Boolean!
+	message: String!
+	data: ForgotPasswordResponse
+	error: String
+}
+
+# Forgot password response
+type ForgotPasswordSuccess {
+	email: String!
+	codeDeliveryDetails: CodeDeliveryDetails
+}
+
+# Login user input
+input LoginInput {
+	email: String!
+	password: String!
+}
+
+# Refresh token input
+input RefreshTokenInput {
+	refreshToken: String!
+	username: String!
+}
+
+# Authentication Lambda GraphQL Schema
+# This schema defines all authentication operations for the auth lambda function
+# Each mutation accepts only the params (not the action) as specified in the requirements
+# ========================================
+# INPUT TYPES - Based on Lambda Validation Schemas
+# ========================================
+# Register user input
+input RegisterInput {
+	email: String!
+	password: String!
+	name: String!
+}
+
+# Success response wrapper for RegistrationSuccess operations (register)
+type RegistrationResponse {
+	success: Boolean!
+	message: String!
+	data: RegistrationSuccess
+	error: String
+}
+
+# Registration success response
+type RegistrationSuccess {
+	userSub: String
+	email: String!
+	confirmationRequired: Boolean!
+	codeDeliveryDetails: CodeDeliveryDetails
+}
+
+# Reset password input
+input ResetPasswordInput {
+	email: String!
+	confirmationCode: String!
+	newPassword: String!
+}
+
+# Update profile input
+input UpdateProfileInput {
+	accessToken: String!
+	name: String
+	picture: String
+	phoneNumber: String
+	customAttributes: AWSJSON
+}
+
+# Success response for void operations (confirmRegistration, resetPassword, changePassword, updateProfile)
+type VoidSuccessResponse {
+	success: Boolean!
+	message: String!
+	error: String
+}
+
+# ========================================
+# MUTATIONS - One for each auth operation
+# ========================================
+type Mutation {
+	# User Registration
+	# Creates a new user account with email, password, and name
+	# Returns: RegistrationSuccess with user details and confirmation requirements
+	registerUser(input: RegisterInput!): RegistrationResponse
+	# User Login
+	# Authenticates user and returns access tokens
+	# Returns: AuthToken with access, ID, and refresh tokens
+	loginUser(input: LoginInput!): AuthTokenResponse
+	# Confirm Registration
+	# Verifies user email with confirmation code sent during registration
+	# Returns: Void (no data returned on success)
+	confirmRegistration(input: ConfirmRegistrationInput!): VoidSuccessResponse
+	# Forget Password
+	# Initiates password reset process by sending confirmation code to email
+	# Returns: ForgotPasswordResponse with email and delivery details
+	forgetPassword(input: ForgetPasswordInput!): ForgotPasswordResponse
+	# Reset Password
+	# Completes password reset using confirmation code and new password
+	# Returns: Void (no data returned on success)
+	resetPassword(input: ResetPasswordInput!): VoidSuccessResponse
+	# Change Password
+	# Changes user password when authenticated (requires current password)
+	# Returns: Void (no data returned on success)
+	changePassword(input: ChangePasswordInput!): VoidSuccessResponse
+	# Refresh Token
+	# Refreshes access token using refresh token
+	# Returns: AuthToken with new access and ID tokens
+	refreshToken(input: RefreshTokenInput!): AuthTokenResponse
+	# Update Profile
+	# Updates user profile information (name, picture, phone, custom attributes)
+	# Returns: Void (no data returned on success)
+	updateProfile(input: UpdateProfileInput!): VoidSuccessResponse
+}
+
+# ========================================
+# QUERIES (Optional - for future use)
+# ========================================
+type Query {
+	# Health check for the auth service
+	authHealthCheck: String
+}
+
+# ========================================
+# SUBSCRIPTION (Optional - for real-time updates)
+# ========================================
+type Subscription {
+	# Subscribe to auth events for a user
+	authEvents(userId: String!): AWSJSON
+}
+
+# ========================================
+# SCHEMA DEFINITION
+# ========================================
+schema {
+	query: Query
+	mutation: Mutation
+	subscription: Subscription
+}

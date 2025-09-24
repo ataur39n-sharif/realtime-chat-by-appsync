@@ -1,0 +1,18 @@
+{
+  "sub": "b8aedf95-ed23-46fc-a379-7a4edfb60241",
+  "email_verified": true,
+  "iss": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_YN1hksnFF",
+  "cognito:username": "b8aedf95-ed23-46fc-a379-7a4edfb60241",
+  "given_name": "Rahman",
+  "picture": "https://example.com/profile-pictures/rahman-sharif.jpg",
+  "origin_jti": "acfa5513-a101-4ad8-9e78-c63d11f22f1d",
+  "aud": "1d60503k031v1h2dn0r6pfu9hs",
+  "event_id": "e06c9e3e-42c9-4167-961e-3043bb580d48",
+  "token_use": "id",
+  "auth_time": 1758729850,
+  "exp": 1758733450,
+  "iat": 1758729850,
+  "family_name": "Sharif",
+  "jti": "52c92b8e-471a-43c0-8986-0f54005dc349",
+  "email": "rahman.sharif39n@gmail.com"
+}
