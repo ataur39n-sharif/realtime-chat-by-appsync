@@ -14,7 +14,7 @@ import { createTeamMessage, queryTeamMessagesByBoardIdIndex, onCreateTeamMessage
 import { CreateTeamMessageInput, TeamMessage } from '@/lib/types';
 import { ArrowLeft, Building2, Menu, Send, Settings, Users, Wifi, WifiOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import LogoutButton from './logout-button';
 
 interface BoardMember {
@@ -59,6 +59,7 @@ export default function BoardChatInterface({
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [boardName, setBoardName] = useState(initialBoardName);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
 
 
@@ -126,6 +127,10 @@ export default function BoardChatInterface({
               const newMessage = data.onCreateTeamMessageByBoardId;
               // No need to filter by boardId since subscription is board-specific
               setMessages(prev => [...prev, newMessage]);
+              // Auto-scroll to bottom when new message arrives
+              setTimeout(() => {
+                scrollToBottom();
+              }, 300);
             }
           },
           error: (error: any) => {
@@ -150,6 +155,19 @@ export default function BoardChatInterface({
     };
   }, [boardId]);
 
+  // Function to scroll to bottom of messages
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        // Use requestAnimationFrame to ensure DOM is updated
+        requestAnimationFrame(() => {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        });
+      }
+    }
+  };
+
   const loadMessages = async () => {
     try {
       setIsLoading(true);
@@ -171,6 +189,10 @@ export default function BoardChatInterface({
         setMessages(boardMessages.sort(
           (a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         ));
+        // Auto-scroll to bottom after loading messages
+        setTimeout(() => {
+          scrollToBottom();
+        }, 300);
       }
     } catch (error: any) {
       console.error('Error loading messages:', error);
@@ -237,6 +259,10 @@ export default function BoardChatInterface({
 
       console.log('Message sent successfully:', result);
       setNewMessage('');
+      // Auto-scroll to bottom after sending message
+      setTimeout(() => {
+        scrollToBottom();
+      }, 300);
     } catch (error: any) {
       console.error('Error sending message:', error);
       console.error('Full error object:', JSON.stringify(error, null, 2));
@@ -476,7 +502,7 @@ export default function BoardChatInterface({
           </Card>
 
           {/* Messages Area */}
-          <ScrollArea className="flex-1">
+          <ScrollArea ref={scrollAreaRef} className="flex-1">
             <div className="p-4 sm:p-6 space-y-4 max-w-4xl mx-auto">
               {isLoading ? (
                 <div className="flex justify-center items-center h-64">
@@ -566,6 +592,7 @@ export default function BoardChatInterface({
                       <Send className="h-4 w-4" />
                     )}
                   </Button>
+
                 </div>
               </div>
             </CardContent>
