@@ -177,15 +177,21 @@ The application is fully responsive with:
 
 ## 🔒 Environment Variables
 
-Required environment variables for AWS AppSync and authentication:
+Copy the `.env.example` file to `.env.local` and update with your API credentials:
 
-| Variable | Description |
+```bash
+cp .env.example .env.local
+```
+
+Required environment variables:
+
+| Category | Variables |
 |----------|-------------|
-| `NEXT_PUBLIC_APPSYNC_GRAPHQL_ENDPOINT` | Your AppSync GraphQL endpoint |
-| `NEXT_PUBLIC_APPSYNC_REGION` | AWS region (e.g., us-east-1) |
-| `NEXT_PUBLIC_APPSYNC_AUTHENTICATION_TYPE` | Authentication type (AMAZON_COGNITO_USER_POOLS) |
-| `NEXT_PUBLIC_USER_POOL_ID` | Cognito User Pool ID |
-| `NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID` | Cognito User Pool Web Client ID |
+| **AWS Region** | `NEXT_PUBLIC_AWS_REGION` |
+| **Authentication** | `JWT_SECRET`, `COOKIE_SECRET` |
+| **Message API** | `NEXT_PUBLIC_APPSYNC_HTTPS_MESSAGE_API_ENDPOINT`, `NEXT_PUBLIC_APPSYNC_WS_MESSAGE_API_ENDPOINT`, `NEXT_PUBLIC_APPSYNC_API_KEY` |
+| **Auth API** | `NEXT_PUBLIC_AUTH_APPSYNC_ENDPOINT`, `NEXT_PUBLIC_AUTH_APPSYNC_API_KEY` |
+| **Board API** | `NEXT_PUBLIC_BOARD_ENDPOINT`, `NEXT_PUBLIC_BOARD_API_KEY` |
 
 ## 🔄 Recent Updates
 
