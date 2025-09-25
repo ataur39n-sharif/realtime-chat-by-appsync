@@ -1,8 +1,8 @@
 'use server';
 
-import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import jwt from 'jsonwebtoken';
 
 // Types based on auth.gql schema
 interface LoginInput {
@@ -80,7 +80,7 @@ async function makeAuthRequest(query: string, variables: any): Promise<any> {
   }
 
   const result = await response.json();
-
+  
   if (result.errors) {
     throw new Error(result.errors[0]?.message || 'GraphQL error');
   }
@@ -107,7 +107,7 @@ function decodeIdToken(idToken: string): DecodedIdToken {
 function setAuthCookies(authData: AuthToken, userInfo: DecodedIdToken) {
   const cookieStore = cookies();
   const expiresAt = new Date(userInfo.exp * 1000); // Convert Unix timestamp to Date
-
+  
   // Set secure cookies with expiration
   cookieStore.set('accessToken', authData.accessToken, {
     httpOnly: true,
@@ -115,21 +115,21 @@ function setAuthCookies(authData: AuthToken, userInfo: DecodedIdToken) {
     sameSite: 'strict',
     expires: expiresAt,
   });
-
+  
   cookieStore.set('idToken', authData.idToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     expires: expiresAt,
   });
-
+  
   cookieStore.set('refreshToken', authData.refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
   });
-
+  
   // Store user info in a separate cookie (can be accessed client-side if needed)
   cookieStore.set('userInfo', JSON.stringify({
     sub: userInfo.sub,
@@ -151,20 +151,20 @@ export async function loginUser(input: LoginInput): Promise<{ success: boolean; 
   try {
     const data = await makeAuthRequest(LOGIN_MUTATION, { input });
     const loginResponse: AuthTokenResponse = data.loginUser;
-
+    
     if (!loginResponse.success || !loginResponse.data) {
       return {
         success: false,
         message: loginResponse.message || loginResponse.error || 'Login failed',
       };
     }
-
+    
     // Decode the ID token to get user information
     const userInfo = decodeIdToken(loginResponse.data.idToken);
-
+    
     // Set authentication cookies
     setAuthCookies(loginResponse.data, userInfo);
-
+    
     return {
       success: true,
       message: 'Login successful',
@@ -183,11 +183,11 @@ export async function getCurrentUser(): Promise<any | null> {
   try {
     const cookieStore = cookies();
     const userInfoCookie = cookieStore.get('userInfo');
-
+    
     if (!userInfoCookie) {
       return null;
     }
-
+    
     return JSON.parse(userInfoCookie.value);
   } catch (error) {
     console.error('Error getting current user:', error);
@@ -201,15 +201,15 @@ export async function isAuthenticated(): Promise<boolean> {
     const cookieStore = cookies();
     const accessToken = cookieStore.get('accessToken');
     const idToken = cookieStore.get('idToken');
-
+    
     if (!accessToken || !idToken) {
       return false;
     }
-
+    
     // Decode ID token to check expiration
     const decoded = decodeIdToken(idToken.value);
     const now = Math.floor(Date.now() / 1000);
-
+    
     return decoded.exp > now;
   } catch (error) {
     console.error('Error checking authentication:', error);
@@ -220,13 +220,13 @@ export async function isAuthenticated(): Promise<boolean> {
 // Function to logout user
 export async function logoutUser(): Promise<void> {
   const cookieStore = cookies();
-
+  
   // Clear all auth cookies
   cookieStore.delete('accessToken');
   cookieStore.delete('idToken');
   cookieStore.delete('refreshToken');
   cookieStore.delete('userInfo');
-
+  
   redirect('/login');
 }
 
@@ -235,7 +235,7 @@ export async function getAccessToken(): Promise<string | null> {
   try {
     const cookieStore = cookies();
     const accessToken = cookieStore.get('accessToken');
-
+    
     return accessToken?.value || null;
   } catch (error) {
     console.error('Error getting access token:', error);

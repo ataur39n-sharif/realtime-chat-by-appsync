@@ -172,4 +172,16 @@ type Subscription {
 		files: [String]
 	): TeamMessage
 		@aws_subscribe(mutations: ["deleteTeamMessage"])
+	onCreateTeamMessageByBoardId(
+		boardId: ID!
+	): TeamMessage
+		@aws_subscribe(mutations: ["createTeamMessage"])
+	onUpdateTeamMessageByBoardId(
+		boardId: ID!
+	): TeamMessage
+		@aws_subscribe(mutations: ["updateTeamMessage"])
+	onDeleteTeamMessageByBoardId(
+		boardId: ID!
+	): TeamMessage
+		@aws_subscribe(mutations: ["deleteTeamMessage"])
 }

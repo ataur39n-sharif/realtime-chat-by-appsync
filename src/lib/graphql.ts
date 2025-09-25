@@ -167,3 +167,24 @@ export const onDeleteTeamMessage = /* GraphQL */ `
     }
   }
 `;
+
+export const onCreateTeamMessageByBoardId = /* GraphQL */ `
+  subscription OnCreateTeamMessageByBoardId($boardId: ID!) {
+    onCreateTeamMessageByBoardId(boardId: $boardId) {
+      id
+      boardId
+      senderId
+      senderInfo {
+        id
+        name
+        email
+        picture
+      }
+      message
+      files
+      seenBy
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -1,10 +1,10 @@
 # Real-time Team Chat with AWS AppSync
 
-A modern, responsive team messaging application built with Next.js, TypeScript, and AWS AppSync for real-time communication. Features a beautiful UI powered by Shadcn UI components and Tailwind CSS with comprehensive authentication and board management.
+A modern, responsive team messaging application built with Next.js, TypeScript, and AWS AppSync for real-time communication. Features a beautiful UI powered by Shadcn UI components and Tailwind CSS with comprehensive authentication and board management. Optimized with board-specific GraphQL subscriptions for efficient real-time messaging.
 
 ## 🚀 Features
 
-- **Real-time Messaging**: Powered by AWS AppSync GraphQL subscriptions with sender information
+- **Real-time Messaging**: Powered by AWS AppSync GraphQL subscriptions with board-specific filtering
 - **Multi-Board Support**: Create and manage different project boards
 - **User Authentication**: Secure login system with JWT token management
 - **Board Management**: Dynamic board creation, navigation, and type-based organization
@@ -16,6 +16,7 @@ A modern, responsive team messaging application built with Next.js, TypeScript, 
 - **Message Persistence**: Messages are stored and retrieved from AWS AppSync
 - **Dynamic Routing**: Board-specific URLs with type parameters
 - **Error Handling**: Comprehensive error handling and retry mechanisms
+- **Optimized Subscriptions**: Server-side filtered GraphQL subscriptions for improved performance
 
 ## 🛠️ Tech Stack
 
@@ -186,16 +187,21 @@ Required environment variables for AWS AppSync and authentication:
 | `NEXT_PUBLIC_USER_POOL_ID` | Cognito User Pool ID |
 | `NEXT_PUBLIC_USER_POOL_WEB_CLIENT_ID` | Cognito User Pool Web Client ID |
 
-## 🔧 Recent Updates
+## 🔄 Recent Updates
 
-### Version 2.0 Features
-- **Enhanced Authentication**: Implemented JWT token-based authentication with secure cookie storage
-- **Board Management System**: Added comprehensive board creation, navigation, and management
-- **Dynamic Routing**: Implemented board-specific URLs with type parameters (`/board/[id]`)
-- **Sender Information**: Messages now include complete sender details (name, avatar, user ID)
-- **Improved GraphQL Schema**: Updated schema to support board operations and sender information
-- **Error Handling**: Added comprehensive error handling and validation throughout the application
-- **Real-time Updates**: Enhanced real-time messaging with proper subscription management
+### Version 2.1 (Current)
+- **Optimized GraphQL Subscriptions**: Implemented board-specific subscriptions with server-side filtering
+- **Improved Performance**: Reduced network traffic by eliminating client-side message filtering
+- **Enhanced Scalability**: Better handling of high message volume across multiple boards
+
+### Version 2.0
+- **Enhanced Authentication**: Implemented JWT-based authentication system
+- **Board Management**: Added ability to create and manage multiple boards
+- **Dynamic Routing**: Implemented board-specific URLs with parameters
+- **Sender Information**: Added user details to messages
+- **Improved GraphQL Schema**: Restructured for better type safety
+- **Error Handling**: Added comprehensive error handling and retry mechanisms
+- **Real-time Updates**: Enhanced subscription management
 - **Responsive UI**: Improved mobile and desktop user experience with better navigation
 
 ## 🤝 Contributing

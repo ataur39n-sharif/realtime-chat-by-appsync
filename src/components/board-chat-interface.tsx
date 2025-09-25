@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
 import { client } from '@/lib/appsync';
-import { createTeamMessage, queryTeamMessagesByBoardIdIndex, onCreateTeamMessage } from '@/lib/graphql';
+import { createTeamMessage, queryTeamMessagesByBoardIdIndex, onCreateTeamMessage, onCreateTeamMessageByBoardId } from '@/lib/graphql';
 import { CreateTeamMessageInput, TeamMessage } from '@/lib/types';
 import { ArrowLeft, Building2, Menu, Send, Settings, Users, Wifi, WifiOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -116,17 +116,16 @@ export default function BoardChatInterface({
       try {
         setIsConnected(false);
 
-        // Use the correct Amplify v6 subscription syntax
+        // Use the board-specific subscription with boardId parameter
         subscription = (client.graphql({
-          query: onCreateTeamMessage
+          query: onCreateTeamMessageByBoardId,
+          variables: { boardId }
         }) as any).subscribe({
           next: ({ data }: any) => {
-            if (data?.onCreateTeamMessage) {
-              const newMessage = data.onCreateTeamMessage;
-              // Only add messages for the current board
-              if (newMessage.boardId === boardId) {
-                setMessages(prev => [...prev, newMessage]);
-              }
+            if (data?.onCreateTeamMessageByBoardId) {
+              const newMessage = data.onCreateTeamMessageByBoardId;
+              // No need to filter by boardId since subscription is board-specific
+              setMessages(prev => [...prev, newMessage]);
             }
           },
           error: (error: any) => {

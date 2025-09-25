@@ -22,16 +22,22 @@ graph TD
 ```
 
 ## 2. Technology Description
-- Frontend: Next.js@14 + TypeScript + Tailwind CSS@3 + AWS Amplify SDK
-- Backend: AWS AppSync (GraphQL API)
-- Database: DynamoDB (managed by AppSync)
-- File Storage: Amazon S3
-- Real-time: AppSync Subscriptions over WebSocket
+
+* Frontend: Next.js\@14 + TypeScript + Tailwind CSS\@3 + AWS Amplify SDK
+
+* Backend: AWS AppSync (GraphQL API)
+
+* Database: DynamoDB (managed by AppSync)
+
+* File Storage: Amazon S3
+
+* Real-time: AppSync Subscriptions over WebSocket
 
 ## 3. Route Definitions
-| Route | Purpose |
-|-------|---------|
-| / | Main chat interface with real-time messaging |
+
+| Route       | Purpose                                      |
+| ----------- | -------------------------------------------- |
+| /           | Main chat interface with real-time messaging |
 | /api/upload | File upload endpoint for message attachments |
 
 ## 4. API Definitions
@@ -39,6 +45,7 @@ graph TD
 ### 4.1 Core API
 
 **Message Operations**
+
 ```graphql
 # Create a new message
 mutation CreateTeamMessage($input: CreateTeamMessageInput!) {
@@ -87,6 +94,7 @@ subscription OnCreateTeamMessage($boardId: ID) {
 ```
 
 **TypeScript Interfaces**
+
 ```typescript
 interface TeamMessage {
   id: string;
@@ -116,6 +124,7 @@ interface Board {
 ## 5. Data Model
 
 ### 5.1 Data Model Definition
+
 ```mermaid
 erDiagram
   TEAM_MESSAGE {
@@ -149,6 +158,7 @@ erDiagram
 ### 5.2 Dummy Data Definition
 
 **Board Data**
+
 ```json
 {
   "id": "board-1",
@@ -158,6 +168,7 @@ erDiagram
 ```
 
 **Team Members Data**
+
 ```json
 [
   {
@@ -196,9 +207,11 @@ erDiagram
 ### 5.3 Environment Configuration
 
 **Required Environment Variables**
+
 ```bash
 APPSYNC_HTTPS_MESSAGE_API_ENDPOINT=https://qjy5mxqcn5d2xf44d6jvsaejgi.appsync-api.us-east-1.amazonaws.com/graphql
 APPSYNC_WS_MESSAGE_API_ENDPOINT=wss://qjy5mxqcn5d2xf44d6jvsaejgi.appsync-realtime-api.us-east-1.amazonaws.com/graphql
 APPSYNC_API_KEY=da2-567432109876543210
 NEXT_PUBLIC_AWS_REGION=us-east-1
 ```
+
